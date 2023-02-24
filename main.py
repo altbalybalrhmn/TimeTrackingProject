@@ -1,4 +1,5 @@
 import json
+import re
 
 from time import time
 from PyQt5 import QtWidgets
@@ -19,22 +20,26 @@ class LoginUI(QDialog):
         self.loginButton.clicked.connect(self.logIN)
 
         self.signUpButton.clicked.connect(self.signUp)
-
+        self.emailInputLogin.setText ("ramy@ramy.nl") # for testing - remove in the final version!!!!
         # hide error messaages in the GUI by default
         self.errorTextSignUp.setText("")
         self.errorTextLogin.setText("")
 
 
     def logIN (self):
+
         if self.emailInputLogin.text() :
             # Load the JSON file
             with open('users.json', 'r') as file:
                 users_data = json.load(file)
 
             # Check if the new user already exists
-
+            global userEmail, userName
             for user in users_data['UsersDB'].values():
                 if user['Email'] == self.emailInputLogin.text():
+                    
+                    userEmail = self.emailInputLogin.text()
+                    userName = user['Name']
                     self.go_main_menu()
                     break
             else:
@@ -76,15 +81,108 @@ class LoginUI(QDialog):
 
 
     def go_main_menu(self):
+
         main_menu = MainMenuUI()
         widget.addWidget(main_menu)
         widget.setCurrentIndex(widget.currentIndex()+1)
+
 
 
 class MainMenuUI(QDialog):
     def __init__(self):
         super(MainMenuUI,self).__init__()
         loadUi("./UI/mainMenu.ui",self)
+
+        # Set the title of the workspace based on user's name!
+        self.titleWorkspaceLabel.setText(f"{userName}'s Workspace!")
+        # Hide error messages by default from the GUI
+        self.errorTextRecipientsEmailLabel.setText("")
+        self.errorTextProjectLabel.setText("")
+        self.errorTextSubjectLabel.setText("")
+
+        # Remove default example items from UI
+        self.deleteRecipientCombo.clear()
+
+        # Display lists 
+        self.displayRecipients()
+
+        self.addRecipientButton.clicked.connect(self.addRecipient)
+        self.deleteRecipientButton.clicked.connect(self.deleteRecipient)
+
+
+    def displayRecipients (self) :
+
+        with open('recipients.json') as f:
+            users = json.load(f)['RecipientsDB']
+
+        email_to_find = userEmail
+        for key in users:
+            if users[key]['Email'] == email_to_find:
+                recipients = users[key]['RecipientsEmails']
+                self.deleteRecipientCombo.clear()
+                self.deleteRecipientCombo.addItems(recipients)
+                break
+        else:
+            pass #print(f"No user with email {email_to_find} was found to have a recipients list.")
+
+
+    def is_valid_email(self, email_to_check):
+        
+        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        return bool(re.match(email_pattern, email_to_check))
+
+
+    def addRecipient (self) :
+
+        addRecipient_email = self.addRecipientInput.text()
+
+        if self.is_valid_email(addRecipient_email) : # If what the user typed is actually a valid email
+
+            with open('recipients.json') as f:
+                recipients_db = json.load(f)
+
+            # Find the user's email in the JSON
+            user_email = userEmail
+            for user in recipients_db["RecipientsDB"].values():
+                if user["Email"] == user_email:
+
+                    if addRecipient_email in user['RecipientsEmails']: # does this email already exisit in RecipientsEmails?
+                        self.errorTextRecipientsEmailLabel.setText(f"{addRecipient_email} already exists in the list of recipients.")
+                    else :
+                        user["RecipientsEmails"].append(addRecipient_email) # DONE!
+                        self.errorTextRecipientsEmailLabel.setText(f"{addRecipient_email} was added.")
+
+                        # Save the updated JSON to file
+                        with open('recipients.json', 'w') as f:
+                            json.dump(recipients_db, f)
+
+                        self.displayRecipients() # update the GUI
+        else :
+            self.errorTextRecipientsEmailLabel.setText("This is not a valid email address!")
+
+    def deleteRecipient (self):
+
+        recipientToDelete = self.deleteRecipientCombo.currentText()
+
+        # Load the JSON file into a dictionary
+        with open('recipients.json', 'r') as f:
+            recipients_db = json.load(f)
+
+        # Find the user
+        for user in recipients_db['RecipientsDB'].values():
+            if user['Email'] == userEmail:
+                # Check if recipientToDelete exists in the user's list of recipients
+                if recipientToDelete in user['RecipientsEmails']:
+                    # Remove recipientToDelete from the list of recipients
+                    user['RecipientsEmails'].remove(recipientToDelete)
+                break
+
+        # Save the updated dictionary to the JSON file
+        with open('recipients.json', 'w') as f:
+            json.dump(recipients_db, f, indent=2)
+
+        self.displayRecipients()
+
 
 class PomodoroUI(QDialog):
     def __init__(self):
