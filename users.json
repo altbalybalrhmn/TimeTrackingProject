@@ -1,0 +1,44 @@
+{
+    "UsersDB": {
+        "1": {
+            "Email": "ramy@ramy.nl",
+            "Name": "Ramy Aaron"
+        },
+        "2": {
+            "Email": "jane@example.com",
+            "Name": "Jane Doe"
+        },
+        "3": {
+            "Email": "john@example.com",
+            "Name": "John Smith"
+        },
+        "4": {
+            "Email": "alice@example.com",
+            "Name": "Alice Johnson"
+        },
+        "5": {
+            "Email": "bob@example.com",
+            "Name": "Bob Brown"
+        },
+        "6": {
+            "Email": "kate@example.com",
+            "Name": "Kate Anderson"
+        },
+        "7": {
+            "Email": "fsdf@sdfdf.com",
+            "Name": "Jane Doe"
+        },
+        "8": {
+            "Email": "fsdf@sdfdf.comd",
+            "Name": "Jane Doe"
+        },
+        "9": {
+            "Email": "kate@example.comd",
+            "Name": "Jane Doe"
+        },
+        "11": {
+            "Email": "dasd@sdfsdf.com",
+            "Name": "rfsdfkjl"
+        }
+    }
+}
