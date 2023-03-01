@@ -1,0 +1,149 @@
+{
+  "PomodorosApp": {
+    "Users": [
+      {
+        "Email": "ramy@ramy.nl",
+        "Name": "Ramy",
+        "Recipients": ["ramy@ramy.nl", "two@ramy.nl"],
+        "Projects": [
+          {
+            "ProjectName": "Project01",
+            "ProjectTotalTrackedTime": "90",
+            "Subjects": [
+              {
+                "SubjectName": "Subject01",
+                "SubjectTotalTrackedTime": "180",
+                "PomodoroSessions": [
+                  {
+                    "StartTimestamp": "1677492925.125641",
+                    "EndTimestamp": "1677493119.798744",
+                    "Tasks": [
+                      { "TaskName": "Task01", "Completed": "True" },
+                      { "TaskName": "Task02", "Completed": "False" },
+                      { "TaskName": "Task03", "Completed": "True" }
+                    ]
+                  },
+                  {
+                    "StartTimestamp": "1677492925.125641",
+                    "EndTimestamp": "1677493028.564154",
+                    "Tasks": [
+                      { "TaskName": "Task01", "Completed": "True" },
+                      { "TaskName": "Task02", "Completed": "False" },
+                      { "TaskName": "Task03", "Completed": "True" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              },
+              {
+                "SubjectName": "sooobjeeeekttt",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": []
+              }
+            ]
+          },
+          {
+            "ProjectName": "proooojeect",
+            "ProjectTotalTrackedTime": "0",
+            "Subjects": []
+          },
+          {
+            "ProjectName": "sdfsdf",
+            "ProjectTotalTrackedTime": "0",
+            "Subjects": []
+          },
+          {
+            "ProjectName": "okayyy",
+            "ProjectTotalTrackedTime": "0",
+            "Subjects": []
+          }
+        ]
+      },
+      {
+        "Email": "1@1.pmdd",
+        "Name": "OkayCOok",
+        "Recipients": [],
+        "Projects": [
+          {
+            "ProjectName": "one",
+            "ProjectTotalTrackedTime": "0",
+            "Subjects": [
+              {
+                "SubjectName": "two",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": [
+                  {
+                    "StartTimestamp": "1677667001.7955344",
+                    "EndTimestamp": 1677668049.5321991,
+                    "Tasks": [{ "TaskName": "oneee", "Completed": "True" }]
+                  },
+                  {
+                    "StartTimestamp": "1677667967.9708462",
+                    "EndTimestamp": 1677668010.7151606,
+                    "Tasks": [{ "TaskName": "nn", "Completed": "True" }]
+                  },
+                  {
+                    "StartTimestamp": "1677668131.476426",
+                    "EndTimestamp": 1677668137.5299246,
+                    "Tasks": [{ "TaskName": "rtrtr", "Completed": "True" }]
+                  }
+                ]
+              },
+              {
+                "SubjectName": "we",
+                "SubjectTotalTrackedTime": "0",
+                "PomodoroSessions": [
+                  {
+                    "StartTimestamp": "1677667870.750607",
+                    "EndTimestamp": null,
+                    "Tasks": [{ "TaskName": "", "Completed": "False" }]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Email": "mr@cool.com",
+        "Name": "MrCool",
+        "Recipients": ["mr@cool.com"],
+        "Projects": []
+      }
+    ]
+  }
+}
