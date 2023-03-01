@@ -20,8 +20,8 @@ import utils.dbWriter
 
 class LoginUI(QDialog):
     def __init__(self):
-        super(LoginUI,self).__init__()
-        loadUi("./UI/login.ui",self)
+        super(LoginUI, self).__init__()
+        loadUi("./UI/login.ui", self)
 
         # This is example of changing screen
         self.loginButton.clicked.connect(self.logIN)
@@ -35,26 +35,22 @@ class LoginUI(QDialog):
 
         self.emailInputLogin.returnPressed.connect(self.logIN)
 
+   
     def logIN(self):
-
         global userEmail, userName
 
-    def logIN (self):
+        data = utils.dbReader.fetch_jsonDB()
 
-            data = utils.dbReader.fetch_jsonDB()
-
-            # Check if the new user already exists
-            if utils.dbReader.user_exists(self.emailInputLogin.text(), data):
-                userEmail = self.emailInputLogin.text()
-                userName = utils.dbReader.get_username_from_email(
-                    self.emailInputLogin.text(), data)
-                self.go_main_menu()
-            else:
-                self.errorTextLogin.setText("Email does not exist!")
+        # Check if the new user already exists
+        if utils.dbReader.user_exists(self.emailInputLogin.text(), data):
+            userEmail = self.emailInputLogin.text()
+            userName = utils.dbReader.get_username_from_email(
+                self.emailInputLogin.text(), data)
+            self.go_main_menu()
         else:
-            self.errorTextLogin.setText("Email can't be empty")
+            self.errorTextLogin.setText("Email does not exist!")
 
-    def signUp (self) :
+    def signUp(self):
 
         new_user_name = self.nameInputSignUp.text()
         new_user_email = self.emailInputSignUp.text()
@@ -81,7 +77,6 @@ class LoginUI(QDialog):
         else:
             self.errorTextSignUp.setText("Name or email is empty!")
 
-
     def go_main_menu(self):
 
         main_menu = MainMenuUI()
@@ -89,11 +84,10 @@ class LoginUI(QDialog):
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 
-
 class MainMenuUI(QDialog):
     def __init__(self):
-        super(MainMenuUI,self).__init__()
-        loadUi("./UI/mainMenu.ui",self)
+        super(MainMenuUI, self).__init__()
+        loadUi("./UI/mainMenu.ui", self)
 
         # Set the title of the workspace based on user's name!
         self.titleWorkspaceLabel.setText(f"{userName}'s Workspace!")
@@ -112,7 +106,7 @@ class MainMenuUI(QDialog):
         self.summaryTableValuesWidget.setRowCount(0)
         self.showSummarySubjectCombo.clear()
 
-        # Display lists 
+        # Display lists
         self.displayRecipients()
         self.displayListsUI()
 
@@ -431,16 +425,16 @@ class MainMenuUI(QDialog):
                 self.subjectDeleteCombo.addItem(subject)
 
     def is_valid_email(self, email_to_check):
-        
+
         email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         return bool(re.match(email_pattern, email_to_check))
 
-
-    def addRecipient (self) :
+    def addRecipient(self):
 
         addRecipient_email = self.addRecipientInput.text()
 
-        if self.is_valid_email(addRecipient_email) : # If what the user typed is actually a valid email
+        # If what the user typed is actually a valid email
+        if self.is_valid_email(addRecipient_email):
 
             add = utils.dbWriter.add_recipient(userEmail, addRecipient_email)
 
@@ -454,7 +448,7 @@ class MainMenuUI(QDialog):
             self.errorTextRecipientsEmailLabel.setText(
                 "This is not a valid email address!")
 
-    def deleteRecipient (self):
+    def deleteRecipient(self):
 
         recipientToDelete = self.deleteRecipientCombo.currentText()
 
@@ -656,18 +650,18 @@ class ShortBreakUI(QDialog):
 
 class LongBreakUI(QDialog):
     def __init__(self):
-        super(LongBreakUI,self).__init__()
-        loadUi("./UI/longBreak.ui",self)
+        super(LongBreakUI, self).__init__()
+        loadUi("./UI/longBreak.ui", self)
 
 
 app = QApplication(sys.argv)
-UI = LoginUI() # This line determines which screen you will load at first
+UI = LoginUI()  # This line determines which screen you will load at first
 
 # You can also try one of other screens to see them.
-    # UI = MainMenuUI()
-    # UI = PomodoroUI()
-    # UI = ShortBreakUI()
-    # UI = LongBreakUI()
+# UI = MainMenuUI()
+# UI = PomodoroUI()
+# UI = ShortBreakUI()
+# UI = LongBreakUI()
 
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(UI)
