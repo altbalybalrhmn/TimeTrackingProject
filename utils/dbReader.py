@@ -35,7 +35,7 @@ def get_username_from_email(email, data):
     return False
 
 
-def get_user_projects(email, data):
+def get_user_projects(email, data=fetch_jsonDB()):
     """Returns a list of a user's projects."""
     for user in data['PomodorosApp']['Users']:
         if user['Email'] == email:
@@ -43,7 +43,7 @@ def get_user_projects(email, data):
     return []
 
 
-def get_project_subjects(email, project_name, data):
+def get_project_subjects(email, project_name, data=fetch_jsonDB()):
     """Returns a list of subjects under a specific project for a user."""
     for user in data['PomodorosApp']['Users']:
         if user['Email'] == email:
