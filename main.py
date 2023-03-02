@@ -18,7 +18,6 @@ import utils.dbReader
 import utils.formating
 import utils.dbWriter
 
-global pomodoroListofCompletedTasks
 
 
 class LoginUI(QDialog):
