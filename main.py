@@ -2,7 +2,7 @@ import json
 import re
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog, QApplication, QVBoxLayout, QLabel, QPushButton, QMessageBox
 from PyQt5.uic import loadUi
 import sys
 
@@ -28,14 +28,13 @@ class LoginUI(QDialog):
 
         self.signUpButton.clicked.connect(self.signUp)
         # for testing - remove in the final version!!!!
-        self.emailInputLogin.setText("mr@cool.com")
+        self.emailInputLogin.setText("")
         # hide error messaages in the GUI by default
         self.errorTextSignUp.setText("")
         self.errorTextLogin.setText("")
 
         self.emailInputLogin.returnPressed.connect(self.logIN)
 
-   
     def logIN(self):
         global userEmail, userName
 
@@ -59,7 +58,7 @@ class LoginUI(QDialog):
 
         if new_user_name and new_user_email:
 
-            if self.is_valid_email(new_user_email):
+            if utils.formating.is_valid_email(new_user_email):
 
                 # Check if the new user already exists
                 if not utils.dbReader.user_exists(new_user_email, data):
@@ -154,6 +153,9 @@ class MainMenuUI(QDialog):
             self.onListChange)
         # self.showSummaryProjectCombo.currentTextChanged.connect(self.displaySubjectsLists)
 
+        self.sendEmailThisSummaryButton.clicked.connect(
+            self.getDataFromTable_email)
+
     def displayTrackingHistory(self):
 
         # delete all rows
@@ -209,8 +211,52 @@ class MainMenuUI(QDialog):
                 self.summaryTableValuesWidget.setItem(
                     row_count, 4, e_item)  # tasks False
 
-    def updateSubjectsList(self):
-        pass
+    def getDataFromTable_email(self):
+        # print ("ff")
+
+        table_html = "<table>"
+
+        table_html += "<tr>"
+        table_html += '<td style="text-align:center"><strong>Date</strong></td>'
+        table_html += '<td style="text-align:center"><strong>Starting Time</strong></td>'
+        table_html += '<td style="text-align:center"><strong>End Time</strong></td>'
+        table_html += '<td style="text-align:center"><strong>Success (Tasks)</strong></td>'
+        table_html += '<td style="text-align:center"><strong>Failure (Tasks)</strong></td>'
+        table_html += "</tr>"
+
+        for row in range(self.summaryTableValuesWidget.rowCount()):
+
+            table_html += "<tr>"
+
+            for column in range(self.summaryTableValuesWidget.columnCount()):
+                item = self.summaryTableValuesWidget.item(row, column)
+                if item is not None:
+                    table_html += '<td style="text-align:center">' + item.text() + '</td>'
+                else:
+                    table_html += '<td style="text-align:center"></td>'
+
+            table_html += "</tr>"
+
+        table_html += "</table>"
+
+        # print(table_html)
+        recipients = utils.dbReader.get_user_recipients(
+            userEmail, utils.dbReader.fetch_jsonDB())
+        # utils.dbReader.sendSummaryEmail(table_html, recipients )
+
+        Send_are_you_sure = utils.formating.show_popupYesNo(
+            f"This will send emails to: {recipients}, are you sure?")
+
+        if Send_are_you_sure is True:
+            utils.dbReader.sendSummaryEmail(table_html, recipients)
+            utils.formating.show_popup(f"Emails were sent to: {recipients}")
+
+        # main_menu_ui = MainMenuUI()
+        # main_menu_ui.exec_()
+
+        # UI = PomodoroUI()
+        # widget.addWidget(UI)
+        # widget.setCurrentIndex(widget.currentIndex()+1)
 
     def showPomodoroScreen(self):
         global pomodoroProjectName, pomodoroSubjectName
@@ -424,17 +470,12 @@ class MainMenuUI(QDialog):
             for subject in list_of_subjects:
                 self.subjectDeleteCombo.addItem(subject)
 
-    def is_valid_email(self, email_to_check):
-
-        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        return bool(re.match(email_pattern, email_to_check))
-
     def addRecipient(self):
 
         addRecipient_email = self.addRecipientInput.text()
 
         # If what the user typed is actually a valid email
-        if self.is_valid_email(addRecipient_email):
+        if utils.formating.is_valid_email(addRecipient_email):
 
             add = utils.dbWriter.add_recipient(userEmail, addRecipient_email)
 
@@ -469,7 +510,18 @@ class PomodoroUI(QDialog):
     def __init__(self):
         super(PomodoroUI, self).__init__()
         loadUi("./UI/pomodoro.ui", self)
-        global pomodoro_count
+        global pomodoro_count, pomodoro_currentTask
+
+        # hide the button "finish session" if user hasn't started one yet
+        try:
+            pomodoro_currentTask
+        except NameError:
+            # var not defined
+            self.doneButton.setVisible(False)
+        else:
+            pass
+
+        self.labelAsNotFinishedButton.clicked.connect(self.markTaskNOTComplete)
 
         self.goToMainMenuButton.clicked.connect(self.backtoHomeScreen)
 
@@ -501,7 +553,7 @@ class PomodoroUI(QDialog):
         # find out if no task is chosen first
         how_many_tasks = self.tasksCombo.count()
         if how_many_tasks == 0:
-            pass
+            utils.formating.show_popup("Add a task first!")
         else:
             pomodoro_currentTask = self.tasksCombo.currentText()
             print("starting with task: ", pomodoro_currentTask)
@@ -562,7 +614,22 @@ class PomodoroUI(QDialog):
                 utils.dbWriter.add_task(
                     userEmail, pomodoroProjectName, pomodoroSubjectName, new_task_name)
                 self.tasksCombo.addItem(new_task_name)
-                self.tasksCombo_2.addItem(new_task_name)
+                # self.tasksCombo_2.addItem(new_task_name)
+
+    def markTaskNOTComplete(self):
+
+        selected_task = self.tasksCombo_2.currentText()
+
+        if selected_task != "":
+            # print (selected_task)
+            utils.dbWriter.mark_task_as_NOTcompleted(
+                userEmail, pomodoroProjectName, pomodoroSubjectName, selected_task)
+            # add the task above
+            self.tasksCombo.addItem(selected_task)
+            # and remoe it from below
+            index_to_remove = self.tasksCombo_2.findText(selected_task)
+            if index_to_remove >= 0:
+                self.tasksCombo_2.removeItem(index_to_remove)
 
     def showTasksList(self):
 
@@ -570,8 +637,17 @@ class PomodoroUI(QDialog):
         task_list = utils.dbReader.get_subject_task_names(
             userEmail, pomodoroProjectName, pomodoroSubjectName, data)
 
-        self.tasksCombo.addItems(task_list)
-        self.tasksCombo_2.addItems(task_list)
+        # self.tasksCombo.addItems(task_list)
+
+        for task in task_list:
+
+            is_completed = utils.dbReader.is_task_completed(
+                userEmail, pomodoroProjectName, pomodoroSubjectName, task, data)
+
+            if is_completed is True:
+                self.tasksCombo_2.addItem(task)
+            else:
+                self.tasksCombo.addItem(task)
 
     def saveSession(self):
         global pomodoro_currentTask
@@ -584,6 +660,11 @@ class PomodoroUI(QDialog):
         else:
             utils.dbWriter.mark_task_as_completed(
                 userEmail, pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
+
+            utils.formating.show_popup(
+                f"Task: {pomodoro_currentTask} was marked as complete!")
+
+            del pomodoro_currentTask
 
             UI = MainMenuUI()
             widget.addWidget(UI)
@@ -602,6 +683,8 @@ class ShortBreakUI(QDialog):
         loadUi("./UI/shortBreak.ui", self)
 
         self.goToMainMenuButton.clicked.connect(self.backtoHomeScreen)
+
+        self.skipButton.clicked.connect(self.skipShortBreak)
 
         self.startButton.clicked.connect(self.start_stop_timer)
         # Initialize the timer
@@ -643,8 +726,15 @@ class ShortBreakUI(QDialog):
         self.timeLabel.setText(self.remaining_time.toString("mm:ss"))
 
     def backtoHomeScreen(self):
-        home_screen = MainMenuUI()
-        widget.addWidget(home_screen)
+        UI = MainMenuUI()
+        widget.addWidget(UI)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+    def skipShortBreak(self):
+
+        # skip th a short break
+        UI = PomodoroUI()
+        widget.addWidget(UI)
         widget.setCurrentIndex(widget.currentIndex()+1)
 
 
@@ -652,6 +742,62 @@ class LongBreakUI(QDialog):
     def __init__(self):
         super(LongBreakUI, self).__init__()
         loadUi("./UI/longBreak.ui", self)
+
+        self.goToMainMenuButton.clicked.connect(self.backtoHomeScreen)
+        self.skipButton.clicked.connect(self.skipLongBreak)
+
+        self.startButton.clicked.connect(self.start_stop_timer)
+
+        # Initialize the timer
+        self.timer = QTimer(self)
+        self.timer.setInterval(1000)  # each 1 second
+        # run this fucntion  self.update_time
+        self.timer.timeout.connect(self.update_time)
+        self.remaining_time = QTime(0, 0, 3)  # 25 minutes QTime(0, 25, 0)
+
+    def start_stop_timer(self):
+        if self.timer.isActive():
+            self.timer.stop()
+            self.startButton.setText("Start")
+            # Finished
+
+        else:
+            # Re-initialize remaining_time to the correct value
+            self.remaining_time = QTime(0, 0, 3)  # 25 minutes QTime(0, 25, 0)
+            self.timer.start()
+            self.startButton.setText("Stop")
+
+    def update_time(self):
+        self.remaining_time = self.remaining_time.addSecs(-1)
+
+        if self.remaining_time.minute() == 0 and self.remaining_time.second() == 0:
+
+            self.timer.stop()
+            self.startButton.setText("Start")
+            # Finished a long break
+
+            UI = PomodoroUI()
+            widget.addWidget(UI)
+            widget.setCurrentIndex(widget.currentIndex()+1)
+
+            # PomodoroUI()
+            # widget.addWidget(back_to_pomodoro_screen)
+            # widget.setCurrentIndex(widget.currentIndex()+1)
+
+        self.timeLabel.setText(self.remaining_time.toString("mm:ss"))
+
+    def skipLongBreak(self):
+
+        # skip th a long break
+        UI = PomodoroUI()
+        widget.addWidget(UI)
+        widget.setCurrentIndex(widget.currentIndex()+1)
+
+    def backtoHomeScreen(self):
+
+        UI = MainMenuUI()
+        widget.addWidget(UI)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
 
 app = QApplication(sys.argv)

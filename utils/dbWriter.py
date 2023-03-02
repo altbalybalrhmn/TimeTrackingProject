@@ -192,6 +192,26 @@ def mark_task_as_completed(email, project_name, subject_name, task_name):
                                         return True
 
 
+def mark_task_as_NOTcompleted(email, project_name, subject_name, task_name):
+    data = load_data()
+
+    for user in data["PomodorosApp"]["Users"]:
+        if user["Email"] == email:
+            for project in user["Projects"]:
+                if project["ProjectName"] == project_name:
+                    for subject in project["Subjects"]:
+                        if subject["SubjectName"] == subject_name:
+                            for session in subject["PomodoroSessions"]:
+                                for task in session["Tasks"]:
+                                    if task["TaskName"] == task_name:
+                                        task["Completed"] = "False"
+                                        session["EndTimestamp"] = None
+
+                                        save_data(data)
+
+                                        return True
+
+
 def delete_Recipient(userEmail, email_to_remove):
     # Read JSON data from file
 

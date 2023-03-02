@@ -1,4 +1,8 @@
 import json
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 ############################
 global db_filename
 db_filename = 'db.json'
@@ -73,7 +77,7 @@ def get_subject_task_names(email, project_name, subject_name, data):
     return []
 
 
-def get_user_recipients(email, data):
+def get_user_recipients(email, data=fetch_jsonDB()):
     """Returns a list of a user's recipients."""
     for user in data['PomodorosApp']['Users']:
         if user['Email'] == email:
@@ -128,6 +132,33 @@ def get_session_details(email, project_name, subject_name, data):
                                 })
                             return session_details
     return []
+
+
+def sendSummaryEmail(emailTable, recipients):
+
+    # recipients
+
+    emailList = recipients  # ['@ddd']
+
+    with open('UI/email-template.html', 'r') as f:
+        html_body = f.read()
+
+    # Replace the "{pomodoro}" in the html
+    html_body = html_body.replace('{pomodoro}', emailTable)
+
+    msg = MIMEMultipart()
+    msg['Subject'] = 'PomodoroApp - Summary Report'
+    msg['From'] = 'PomodoroApp-Group3 <report@PomodoroApp.com>'
+    msg['To'] = ', '.join(emailList)
+
+    body = MIMEText(html_body, 'html')
+    msg.attach(body)
+
+    # using sendinblue instead of google SMTP
+    with smtplib.SMTP('smtp-relay.sendinblue.com', 587) as smtp:
+        smtp.starttls()
+        smtp.login('pomodoro250530@gmail.com', '2zPrxDQYZk1GgqBt')
+        smtp.send_message(msg)
 
 
 ##########################################################

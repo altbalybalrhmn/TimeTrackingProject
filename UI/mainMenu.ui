@@ -122,7 +122,7 @@ color:rgb(255, 255, 255);</string>
        <rect>
         <x>20</x>
         <y>10</y>
-        <width>51</width>
+        <width>61</width>
         <height>18</height>
        </rect>
       </property>
@@ -130,6 +130,7 @@ color:rgb(255, 255, 255);</string>
        <font>
         <family>Chalkboard</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -219,7 +220,7 @@ color:rgb(255, 255, 255);</string>
        <rect>
         <x>20</x>
         <y>10</y>
-        <width>51</width>
+        <width>61</width>
         <height>18</height>
        </rect>
       </property>
@@ -227,6 +228,7 @@ color:rgb(255, 255, 255);</string>
        <font>
         <family>Chalkboard</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -324,6 +326,7 @@ color:rgb(255, 255, 255);</string>
        <font>
         <family>Chalkboard</family>
         <pointsize>13</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -509,6 +512,7 @@ border-radius:30px;
        <font>
         <family>Chalkboard</family>
         <pointsize>13</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -611,16 +615,17 @@ border-radius:20px;
      <widget class="QLabel" name="selectProjectLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>10</y>
-        <width>51</width>
-        <height>18</height>
+        <width>61</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Chalkboard</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -666,16 +671,17 @@ border-radius:20px;
      <widget class="QLabel" name="selectSubjectLabel">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>50</y>
-        <width>51</width>
-        <height>18</height>
+        <width>61</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Chalkboard</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -948,6 +954,7 @@ border-radius:40px;
        <font>
         <family>Chalkboard</family>
         <pointsize>11</pointsize>
+        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -1098,6 +1105,8 @@ border-radius:40px;
        <font>
         <family>Chalkboard</family>
         <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>false</underline>
        </font>
       </property>
@@ -1172,14 +1181,15 @@ border-radius:0px;
       <property name="font">
        <font>
         <family>Chalkboard</family>
-        <pointsize>13</pointsize>
+        <pointsize>9</pointsize>
+        <weight>50</weight>
         <italic>false</italic>
         <bold>false</bold>
        </font>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color:rgba(88, 128, 63, 128);
-font: 13pt &quot;Chalkboard&quot;;
+font: 9pt &quot;Chalkboard&quot;;
 text-align: center;</string>
       </property>
       <property name="sizeAdjustPolicy">
@@ -1216,6 +1226,11 @@ text-align: center;</string>
        <property name="text">
         <string>1</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
        <property name="background">
         <color>
          <red>0</red>
@@ -1227,6 +1242,11 @@ text-align: center;</string>
       <row>
        <property name="text">
         <string>2</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
        <property name="background">
         <color>
@@ -1243,6 +1263,7 @@ text-align: center;</string>
        <property name="font">
         <font>
          <family>Chalkboard</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="background">
@@ -1260,6 +1281,7 @@ text-align: center;</string>
        <property name="font">
         <font>
          <family>Chalkboard</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="background">
@@ -1277,6 +1299,7 @@ text-align: center;</string>
        <property name="font">
         <font>
          <family>Chalkboard</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="background">
@@ -1294,6 +1317,7 @@ text-align: center;</string>
        <property name="font">
         <font>
          <family>Chalkboard</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="background">
@@ -1311,6 +1335,7 @@ text-align: center;</string>
        <property name="font">
         <font>
          <family>Chalkboard</family>
+         <pointsize>9</pointsize>
         </font>
        </property>
        <property name="background">
@@ -1325,50 +1350,100 @@ text-align: center;</string>
        <property name="text">
         <string>25/09/2022</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
       </item>
       <item row="0" column="1">
        <property name="text">
         <string>09:00</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
       </item>
       <item row="0" column="2">
        <property name="text">
         <string>09:25</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
       </item>
       <item row="0" column="3">
        <property name="text">
         <string>Entering values into system</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
       </item>
       <item row="0" column="4">
        <property name="text">
         <string>Extracting values</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
       </item>
       <item row="1" column="0">
        <property name="text">
         <string>25/09/2022</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
       </item>
       <item row="1" column="1">
        <property name="text">
         <string>09:32</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
       </item>
       <item row="1" column="2">
        <property name="text">
         <string>10:00</string>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
       </item>
       <item row="1" column="3">
        <property name="text">
         <string>Checking blabla</string>
        </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
       </item>
       <item row="1" column="4">
        <property name="text">
         <string/>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+        </font>
        </property>
       </item>
      </widget>
@@ -1402,7 +1477,9 @@ border-radius:20px;
       <property name="font">
        <font>
         <family>Chalkboard</family>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
         <underline>false</underline>
        </font>
       </property>
@@ -1422,7 +1499,7 @@ border-radius:20px;
      <widget class="QLabel" name="totalTrackedTimeDurationLabel">
       <property name="geometry">
        <rect>
-        <x>160</x>
+        <x>170</x>
         <y>10</y>
         <width>71</width>
         <height>20</height>
