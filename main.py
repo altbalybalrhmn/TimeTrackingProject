@@ -214,7 +214,7 @@ class MainMenuUI(QDialog):
                 self.summaryTableValuesWidget.setItem(
                     row_count, 4, e_item)  # tasks False
 
-        elif which_project == "All":  # and which_subject == "All":
+        elif which_project == "All" :  # and which_subject == "All":
 
             allUserProjects = utils.dbReader.get_user_projects(userEmail)
 
@@ -502,7 +502,7 @@ class MainMenuUI(QDialog):
             userEmail, selected_project_name, data)
 
         self.showSummarySubjectCombo.clear()
-        self.showSummarySubjectCombo.addItem("All")
+        #self.showSummarySubjectCombo.addItem("All")
 
         for subject in subjects_list:
             if subject != "All":
@@ -729,7 +729,7 @@ class PomodoroUI(QDialog):
 
         # if pomodoro_currentTask is None:
 
-        pomodoro_currentTask
+        #pomodoro_currentTask
 
         utils.dbWriter.mark_task_as_completed(
             userEmail, pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
