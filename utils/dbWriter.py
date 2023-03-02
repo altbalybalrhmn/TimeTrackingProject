@@ -83,11 +83,6 @@ def add_recipient(userEmail, recipientEmail):
                 save_data(data)
                 return True
 
-    for user in data["PomodorosApp"]["Users"]:
-        if user["Email"] == userEmail:
-            user["Recipients"].remove(email_to_remove)
-            break
-
 
 def add_subject(user_email, project_name, subject_name):
     data = load_data()
