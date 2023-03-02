@@ -1,4 +1,4 @@
-# pyreverse -o png uml
+# pyreverse -o png main.py
 import json
 import re
 
