@@ -1,3 +1,4 @@
+# pyreverse -o png uml
 import json
 import re
 
@@ -16,6 +17,8 @@ from PyQt5.QtCore import QTimer, QTime
 import utils.dbReader
 import utils.formating
 import utils.dbWriter
+
+global pomodoroListofCompletedTasks
 
 
 class LoginUI(QDialog):
@@ -211,6 +214,66 @@ class MainMenuUI(QDialog):
                 self.summaryTableValuesWidget.setItem(
                     row_count, 4, e_item)  # tasks False
 
+        elif which_project == "All":  # and which_subject == "All":
+
+            allUserProjects = utils.dbReader.get_user_projects(userEmail)
+
+            for projectName in allUserProjects:
+                allSubjects = utils.dbReader.get_project_subjects(
+                    userEmail, projectName)
+
+                for subjectName in allSubjects:
+
+                    print(projectName, subjectName)
+
+                    #################################################################
+
+                    data = utils.dbReader.fetch_jsonDB()
+                    # Get session details
+                    session_details = utils.dbReader.get_session_details(
+                        userEmail, projectName, subjectName, data)
+                    # print("Session details:")
+                    for session in session_details:
+                        # print(f"- StartTimestamp: {session['StartTimestamp']}")
+                        # print(f"  EndTimestamp: {session['EndTimestamp']}")
+                        # print(f"  CompletedTasks: {session['CompletedTasks']}")
+                        # print(f"  UncompletedTasks: {session['UncompletedTasks']}")
+
+                        row_count = self.summaryTableValuesWidget.rowCount()
+                        self.summaryTableValuesWidget.setRowCount(
+                            row_count + 1)
+
+                        if isinstance(session['EndTimestamp'], float):
+                            EndTimestamp = utils.formating.HourMinute12HoursFormat(
+                                session['EndTimestamp'])
+
+                        else:
+
+                            EndTimestamp = "N/A"
+
+                        # Add values to each cell in the new row
+                        a_item = QtWidgets.QTableWidgetItem(
+                            utils.formating.DayMonthYear(session['StartTimestamp']))  # date
+                        b_item = QtWidgets.QTableWidgetItem(utils.formating.HourMinute12HoursFormat(
+                            session['StartTimestamp']))  # starting time
+                        # end time   utils.formating.HourMinute12HoursFormat( session['EndTimestamp'])
+                        c_item = QtWidgets.QTableWidgetItem(EndTimestamp)
+                        d_item = QtWidgets.QTableWidgetItem(
+                            ", ".join(session['CompletedTasks']))  # tasks True
+                        e_item = QtWidgets.QTableWidgetItem(
+                            ", ".join(session['UncompletedTasks']))  # tasks False
+
+                        self.summaryTableValuesWidget.setItem(
+                            row_count, 0, a_item)  # date
+                        self.summaryTableValuesWidget.setItem(
+                            row_count, 1, b_item)  # starting time
+                        self.summaryTableValuesWidget.setItem(
+                            row_count, 2, c_item)  # end time
+                        self.summaryTableValuesWidget.setItem(
+                            row_count, 3, d_item)  # tasks True
+                        self.summaryTableValuesWidget.setItem(
+                            row_count, 4, e_item)  # tasks False
+
     def getDataFromTable_email(self):
         # print ("ff")
 
@@ -306,22 +369,26 @@ class MainMenuUI(QDialog):
         project_name = self.addSubjectOnProjectCombo.currentText()
         new_subject_name = self.addSubjectInput.text()
 
-        added = utils.dbWriter.add_subject(
-            userEmail, project_name, new_subject_name)
-        # print ("adddd:" , added)
+        if new_subject_name != "":
 
-        if added is True:
-            self.errorTextSubjectLabel.setText("Added.")
-            self.onListChange()
+            added = utils.dbWriter.add_subject(
+                userEmail, project_name, new_subject_name)
+            # print ("adddd:" , added)
 
-        elif project_name == "":
-            self.errorTextSubjectLabel.setText(
-                "Add a project first!")  # user have no projects yet
+            if added is True:
+                self.errorTextSubjectLabel.setText("Added.")
+                self.onListChange()
 
+            elif project_name == "":
+                self.errorTextSubjectLabel.setText(
+                    "Add a project first!")  # user have no projects yet
+
+            else:
+                self.errorTextSubjectLabel.setText("Already added!")
+
+            # self.displayListsUI()
         else:
-            self.errorTextSubjectLabel.setText("Already added!")
-
-        # self.displayListsUI()
+            self.errorTextSubjectLabel.setText("Empty!")
 
     def removeProject(self):
 
@@ -350,19 +417,24 @@ class MainMenuUI(QDialog):
         # data = utils.dbReader.fetch_jsonDB()
         new_project_name = self.addProjectInput.text()
 
-        add_project = utils.dbWriter.add_project(userEmail, new_project_name)
-
-        if add_project == "Added":
-            self.errorTextProjectLabel.setText("Added!")
-            self.projectDeleteCombo.addItem(new_project_name)
-
-            self.selectProjectCombo.addItem(new_project_name)
-            self.showSummaryProjectCombo.addItem(new_project_name)
-            self.addSubjectOnProjectCombo.addItem(new_project_name)
-
+        if new_project_name == "":
+            self.errorTextProjectLabel.setText("Empty!")
         else:
-            # some error happened!
-            self.errorTextProjectLabel.setText(add_project)
+
+            add_project = utils.dbWriter.add_project(
+                userEmail, new_project_name)
+
+            if add_project == "Added":
+                self.errorTextProjectLabel.setText("Added!")
+                self.projectDeleteCombo.addItem(new_project_name)
+
+                self.selectProjectCombo.addItem(new_project_name)
+                self.showSummaryProjectCombo.addItem(new_project_name)
+                self.addSubjectOnProjectCombo.addItem(new_project_name)
+
+            else:
+                # some error happened!
+                self.errorTextProjectLabel.setText(add_project)
 
     def displayRecipients(self):
 
@@ -655,20 +727,20 @@ class PomodoroUI(QDialog):
         # pomodoroSubjectName
         # pomodoro_currentTask
 
-        if pomodoro_currentTask is None:
-            pass
-        else:
-            utils.dbWriter.mark_task_as_completed(
-                userEmail, pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
+        # if pomodoro_currentTask is None:
 
-            utils.formating.show_popup(
-                f"Task: {pomodoro_currentTask} was marked as complete!")
+        pomodoro_currentTask
 
-            del pomodoro_currentTask
+        utils.dbWriter.mark_task_as_completed(
+            userEmail, pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
 
-            UI = MainMenuUI()
-            widget.addWidget(UI)
-            widget.setCurrentIndex(widget.currentIndex()+1)
+        utils.formating.show_popup(
+            f"Task: {pomodoro_currentTask} marked as complete!")
+
+        del pomodoro_currentTask
+        UI = MainMenuUI()
+        widget.addWidget(UI)
+        widget.setCurrentIndex(widget.currentIndex()+1)
 
     def backtoHomeScreen(self):
 
@@ -775,6 +847,18 @@ class LongBreakUI(QDialog):
             self.timer.stop()
             self.startButton.setText("Start")
             # Finished a long break
+
+            # print (pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
+            utils.dbWriter.mark_task_as_completed(
+                userEmail, pomodoroProjectName, pomodoroSubjectName, pomodoro_currentTask)
+            utils.formating.show_popup(
+                f"Task {pomodoro_currentTask} was marked as completed!")
+
+            # global pomodoroListofCompletedTasks
+            # pomodoroListofCompletedTasks = []
+            # pomodoroListofCompletedTasks.append(pomodoro_currentTask)
+
+            # del pomodoro_currentTask
 
             UI = PomodoroUI()
             widget.addWidget(UI)
