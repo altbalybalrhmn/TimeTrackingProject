@@ -41,6 +41,8 @@ def add_project(user_email, project_name):
         return (f"No user found with email {user_email}")
     elif any(p["ProjectName"] == project_name for p in user["Projects"]):
         return (f"Already exists.")
+    elif project_name == "":
+        return ("invalid entry")
     else:
         new_project = {
             "ProjectName": project_name,
@@ -83,6 +85,11 @@ def add_recipient(userEmail, recipientEmail):
                 save_data(data)
                 return True
 
+    for user in data["PomodorosApp"]["Users"]:
+        if user["Email"] == userEmail:
+            user["Recipients"].remove(email_to_remove())
+            break
+
 
 def add_subject(user_email, project_name, subject_name):
     data = load_data()
@@ -99,15 +106,18 @@ def add_subject(user_email, project_name, subject_name):
     else:
         for subject in project["Subjects"]:
             if subject["SubjectName"] == subject_name:
-                return False
-        new_subject = {
-            "SubjectName": subject_name,
-            "SubjectTotalTrackedTime": "0",
-            "PomodoroSessions": []
-        }
-        project["Subjects"].append(new_subject)
-        save_data(data)
-        return True
+                return ("subject already exists")
+            elif subject_name == "":
+                return ("invalid entry")
+            else:
+                new_subject = {
+                    "SubjectName": subject_name,
+                    "SubjectTotalTrackedTime": "0",
+                    "PomodoroSessions": []
+                }
+                project["Subjects"].append(new_subject)
+                save_data(data)
+                return True
 
 
 def delete_subject(user_email, project_name, subject_name):
