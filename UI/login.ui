@@ -222,7 +222,7 @@ border-radius:10px;
      <property name="font">
       <font>
        <family>Chalkboard</family>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
        <underline>false</underline>
       </font>
      </property>
@@ -288,7 +288,7 @@ color:red;</string>
      <property name="font">
       <font>
        <family>Chalkboard</family>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
        <underline>false</underline>
       </font>
      </property>
@@ -390,7 +390,7 @@ border-radius:10px;
      <property name="font">
       <font>
        <family>Chalkboard</family>
-       <pointsize>14</pointsize>
+       <pointsize>12</pointsize>
        <underline>false</underline>
       </font>
      </property>
