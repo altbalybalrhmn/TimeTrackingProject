@@ -314,14 +314,14 @@ border-radius:30px;
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>61</width>
+       <width>111</width>
        <height>20</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Chalkboard</family>
-       <pointsize>14</pointsize>
+       <pointsize>11</pointsize>
        <weight>50</weight>
        <bold>false</bold>
        <underline>false</underline>
@@ -334,7 +334,7 @@ border-radius:30px;
       <string notr="true">background-color:rgba(255, 255, 255, 0);</string>
      </property>
      <property name="text">
-      <string>Tasks:</string>
+      <string>Finished tasks:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -367,9 +367,9 @@ color:rgb(255, 255, 255);</string>
     <widget class="QComboBox" name="tasksCombo_2">
      <property name="geometry">
       <rect>
-       <x>70</x>
+       <x>130</x>
        <y>20</y>
-       <width>331</width>
+       <width>271</width>
        <height>21</height>
       </rect>
      </property>
